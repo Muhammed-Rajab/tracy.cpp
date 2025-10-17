@@ -10,7 +10,7 @@
 #include <vector>
 
 void write_framebuffer_to_png(const char *filename,
-                              const std::vector<vec3> &framebuffer,
+                              const std::vector<Vec3> &framebuffer,
                               std::size_t width, std::size_t height,
                               std::size_t channels) {
   auto image = std::vector<uint8_t>(width * height * channels);

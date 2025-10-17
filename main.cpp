@@ -12,14 +12,14 @@ int main() {
   int height = 256;
   int channels = 3;
 
-  auto framebuffer = std::vector<vec3>(width * height);
+  auto framebuffer = std::vector<Vec3>(width * height);
   for (int j = 0; j < height; j += 1) {
     for (int i = 0; i < width; i += 1) {
       std::size_t idx = j * width + i;
       double x = (double)i / (double)width;
       double y = (double)j / (double)height;
       double z = (double)(i * j) / (double)(width * height);
-      vec3 pixel = {x, y, z};
+      Vec3 pixel = {x, y, z};
       framebuffer[idx] = pixel;
     }
   }
