@@ -11,6 +11,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra -Ofast")
 add_executable(tracy
   main.cpp
   src/image_writer.cpp
+  src/camera.cpp
+  src/ray.cpp
 )
 
 target_include_directories(tracy PRIVATE include/)

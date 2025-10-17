@@ -1,19 +1,39 @@
 #include "camera.hpp"
+#include "image_writer.hpp"
 #include "utils.hpp"
 #include "vec3.hpp"
 #include <cstddef>
+#include <vector>
 
-// std::vector<Vec3> Camera::render() {
-//
-//   for (std::size_t j = 0; j < image_height; j += 1) {
-//     for (std::size_t i = 0; i < image_width; i += 1) {
-//       std::cout << i << " " << j << "\n";
-//     }
-//   }
-//
-//   return {};
-// }
-//
+std::vector<Vec3> Camera::render() {
+  // makes sure every value is calculated properly
+  initialize();
+
+  std::vector<Vec3> framebuffer(image_width * image_height);
+
+  for (std::size_t j = 0; j < image_height; j += 1) {
+    for (std::size_t i = 0; i < image_width; i += 1) {
+
+      std::size_t index = j * image_width + i;
+
+      // get the ray
+      Ray ray = get_ray(i, j);
+
+      // trace the ray to get the color
+      Color pixel_color = trace_ray(ray);
+
+      // append it to framebuffer
+      framebuffer[index] = pixel_color;
+    }
+  }
+
+  return framebuffer;
+}
+
+Color Camera::trace_ray(const Ray &r) const {
+  //
+  return Color(1, 0, 0);
+}
 
 void Camera::initialize() {
 
