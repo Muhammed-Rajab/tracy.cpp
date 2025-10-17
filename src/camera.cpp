@@ -31,8 +31,14 @@ std::vector<Vec3> Camera::render() {
 }
 
 Color Camera::trace_ray(const Ray &r) const {
-  //
-  return Color(1, 0, 0);
+
+  // gradient from up to down
+  double t = 0.5 * (unit_vector(r.direction()).y() + 1.0);
+
+  Color gradient_start_color = Color(0.96, 0.94, 0.94);
+  Color gradient_end_color = Color(0.99, 0.73, 0.17);
+
+  return (1.0 - t) * gradient_start_color + t * gradient_end_color;
 }
 
 void Camera::initialize() {
