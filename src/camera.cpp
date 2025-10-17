@@ -30,15 +30,39 @@ std::vector<Vec3> Camera::render() {
   return framebuffer;
 }
 
+double hit_sphere(const Ray &r, const Point3 &center, const double radius) {
+  Vec3 oc = center - r.origin();
+  auto a = dot(r.direction(), r.direction());
+  auto b = -2.0 * dot(r.direction(), oc);
+  auto c = dot(oc, oc) - radius * radius;
+  auto discriminant = b * b - 4 * a * c;
+
+  if (discriminant < 0) {
+    return -1.0;
+  } else {
+    return (-b - std::sqrt(discriminant)) / (2.0 * a);
+  }
+}
+
 Color Camera::trace_ray(const Ray &r) const {
+  // check for hits
+  Point3 center = Point3(0, 0, -1);
+  double radius = 0.5;
+  double t = hit_sphere(r, center, radius);
+
+  if (t >= 0.0) {
+    Point3 P = r.at(t);
+    Vec3 N = (P - center) / radius;
+    return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
+  }
 
   // gradient from up to down
-  double t = 0.5 * (unit_vector(r.direction()).y() + 1.0);
+  double a = 0.5 * (unit_vector(r.direction()).y() + 1.0);
 
   Color gradient_start_color = Color(0.96, 0.94, 0.94);
   Color gradient_end_color = Color(0.99, 0.73, 0.17);
 
-  return (1.0 - t) * gradient_start_color + t * gradient_end_color;
+  return (1.0 - a) * gradient_start_color + a * gradient_end_color;
 }
 
 void Camera::initialize() {
