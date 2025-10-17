@@ -14,3 +14,4 @@ add_executable(tracy
 )
 
 target_include_directories(tracy PRIVATE include/)
+target_include_directories(tracy PRIVATE external/stb)
