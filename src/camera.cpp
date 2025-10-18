@@ -46,7 +46,10 @@ Color Camera::trace_ray(const Ray &r, const HittableList &world,
   HitRecord rec;
 
   if (world.hit(r, Interval(0.001, infinity), rec)) {
-    Vec3 direction = random_unit_vector_on_hemisphere(rec.normal);
+    // TODO: switch between two to see the difference between lambertian
+    // distribution and uniform distribution on hemisphere.
+    Vec3 direction = rec.normal + random_unit_vector();
+    // Vec3 direction = random_unit_vector_on_hemisphere(rec.normal);
     return 0.5 * trace_ray(Ray(rec.p, direction), world, depth - 1);
   }
 
