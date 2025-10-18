@@ -14,11 +14,12 @@ int main() {
 
   HittableList world;
 
-  // sphere
-  world.add(std::make_shared<Sphere>(Point3(0, 0, -1), 0.5));
+  // spheres
+  world.add(std::make_shared<Sphere>(Point3(-0.51, 0, -1), 0.5));
+  world.add(std::make_shared<Sphere>(Point3(0.51, 0, -1), 0.5));
 
-  // ground
-  world.add(std::make_shared<Sphere>(Point3(0, -100.5, -1), 100));
+  // ground, which is also huge sphere (checkmate, flath earther!)
+  world.add(std::make_shared<Sphere>(Point3(0, -2000.5, -1), 2000));
 
   Camera cam;
   cam.image_width = 256;
