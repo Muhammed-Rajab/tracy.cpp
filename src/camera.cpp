@@ -16,20 +16,24 @@ std::vector<Vec3> Camera::render(const HittableList &world) {
   std::vector<Vec3> framebuffer(image_width * image_height);
 
   for (std::size_t j = 0; j < image_height; j += 1) {
+    std::clog << "line #" << j + 1 << " out of " << image_height << "\n"
+              << std::flush;
     for (std::size_t i = 0; i < image_width; i += 1) {
 
       std::size_t index = j * image_width + i;
+      Color pixel_color(0, 0, 0);
 
-      // get the ray
-      Ray ray = get_ray(i, j);
+      for (std::size_t sample = 0; sample < samples_per_pixel; sample += 1) {
+        Ray ray = get_ray(i, j);
 
-      // trace the ray to get the color
-      Color pixel_color = trace_ray(ray, world);
+        pixel_color += trace_ray(ray, world);
+      }
 
-      // append it to framebuffer
-      framebuffer[index] = pixel_color;
+      framebuffer[index] = pixel_color * inv_samples_per_pix;
     }
   }
+
+  std::clog << "Done. \n";
 
   return framebuffer;
 }
@@ -56,6 +60,9 @@ void Camera::initialize() {
   // calculate image height from aspect ratio (min height: 1)
   image_height = static_cast<int>(image_width / aspect_ratio);
   image_height = (image_height < 1) ? 1 : image_height;
+
+  // for scaling colors
+  inv_samples_per_pix = 1.0 / samples_per_pixel;
 
   center = lookfrom;
 
@@ -87,9 +94,15 @@ void Camera::initialize() {
 }
 
 Ray Camera::get_ray(std::size_t i, std::size_t j) const {
-  auto ray_origin = center;
-  auto pixel_position = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
+  auto offset = sample_square();
+  auto pixel_sample = pixel00_loc + ((i + offset.x()) * pixel_delta_u) +
+                      ((j + offset.y()) * pixel_delta_v);
 
-  auto ray_direction = pixel_position - ray_origin;
+  auto ray_origin = center;
+  auto ray_direction = pixel_sample - ray_origin;
   return Ray(ray_origin, ray_direction);
+}
+
+Vec3 Camera::sample_square() const {
+  return Vec3(random_double() - 0.5, random_double() - 0.5, 0);
 }

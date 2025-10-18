@@ -13,6 +13,7 @@ class Camera {
 public:
   double aspect_ratio = 1.0; // generated image's aspect ratio
   std::size_t image_width = 100;
+  std::size_t samples_per_pixel = 10;
 
   // WARN: This shouldn't be set from outside. this is to be calculated inside
   // intialize method.
@@ -26,13 +27,16 @@ public:
   std::vector<Vec3> render(const HittableList &world);
 
 private:
-  Point3 center;      // 'eye point'
-  Point3 pixel00_loc; // location of the first pixel
-  Vec3 pixel_delta_u; // horizontal vector between two adjacent pixels
-  Vec3 pixel_delta_v; // vertical vector between two adjacent pixels
-  Vec3 u, v, w;       // basis vectors of camera frame
+  Point3 center;              // 'eye point'
+  Point3 pixel00_loc;         // location of the first pixel
+  Vec3 pixel_delta_u;         // horizontal vector between two adjacent pixels
+  Vec3 pixel_delta_v;         // vertical vector between two adjacent pixels
+  double inv_samples_per_pix; // scales the color, accounting for the samples
+  Vec3 u, v, w;               // basis vectors of camera frame
 
   void initialize(); // calculates important figures
+
+  Vec3 sample_square() const;
 
   Ray get_ray(std::size_t i, std::size_t j) const; // gets ray for a given pixel
 

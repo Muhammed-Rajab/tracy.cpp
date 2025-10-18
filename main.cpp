@@ -22,7 +22,8 @@ int main() {
   world.add(std::make_shared<Sphere>(Point3(0, -2000.5, -1), 2000));
 
   Camera cam;
-  cam.image_width = 256;
+  cam.samples_per_pixel = 50;
+  cam.image_width = 400;
   cam.aspect_ratio = 16.0 / 9.0;
 
   auto framebuffer = cam.render(world);
