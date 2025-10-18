@@ -3,7 +3,6 @@
 #include "hittable_list.hpp"
 #include "image_writer.hpp"
 #include "interval.hpp"
-#include "sphere.hpp"
 #include "utils.hpp"
 #include "vec3.hpp"
 #include <cstddef>

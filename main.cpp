@@ -1,11 +1,7 @@
 #include "hittable_list.hpp"
 #include "sphere.hpp"
 #include "vec3.hpp"
-#include <cstddef>
-#include <cstdint>
-#include <iostream>
 #include <memory>
-#include <vector>
 
 #include "include/camera.hpp"
 #include "include/image_writer.hpp"
@@ -22,7 +18,7 @@ int main() {
   world.add(std::make_shared<Sphere>(Point3(0, -2000.5, -1), 2000));
 
   Camera cam;
-  cam.samples_per_pixel = 50;
+  cam.samples_per_pixel = 10;
   cam.image_width = 400;
   cam.aspect_ratio = 16.0 / 9.0;
 
