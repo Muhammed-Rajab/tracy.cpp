@@ -1,5 +1,6 @@
 #include "camera.hpp"
 #include "base/hittable.hpp"
+#include "hittable_list.hpp"
 #include "image_writer.hpp"
 #include "interval.hpp"
 #include "sphere.hpp"
@@ -8,7 +9,7 @@
 #include <cstddef>
 #include <vector>
 
-std::vector<Vec3> Camera::render() {
+std::vector<Vec3> Camera::render(const HittableList &world) {
   // makes sure every value is calculated properly
   initialize();
 
@@ -23,7 +24,7 @@ std::vector<Vec3> Camera::render() {
       Ray ray = get_ray(i, j);
 
       // trace the ray to get the color
-      Color pixel_color = trace_ray(ray);
+      Color pixel_color = trace_ray(ray, world);
 
       // append it to framebuffer
       framebuffer[index] = pixel_color;
@@ -33,13 +34,11 @@ std::vector<Vec3> Camera::render() {
   return framebuffer;
 }
 
-Color Camera::trace_ray(const Ray &r) const {
+Color Camera::trace_ray(const Ray &r, const HittableList &world) const {
   // check for hits
-  Sphere s(Point3(0, 0, -1), 0.7);
-
   HitRecord rec;
 
-  if (s.hit(r, Interval(0.01, infinity), rec)) {
+  if (world.hit(r, Interval(0.001, infinity), rec)) {
     auto N = rec.normal;
     return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
   }

@@ -15,6 +15,7 @@ add_executable(tracy
   src/ray.cpp
   src/sphere.cpp
   src/hittable.cpp
+  src/hittable_list.cpp
   src/interval.cpp
 )
 

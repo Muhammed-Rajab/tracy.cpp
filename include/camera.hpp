@@ -1,5 +1,6 @@
 #pragma once
 
+#include "hittable_list.hpp"
 #include "image_writer.hpp"
 #include "ray.hpp"
 #include "vec3.hpp"
@@ -22,7 +23,7 @@ public:
   Point3 lookat = Point3(0, 0, -1);  // where to look at
   Vec3 vup = Vec3(0, 1, 0);          // up direction of the camera
 
-  std::vector<Vec3> render();
+  std::vector<Vec3> render(const HittableList &world);
 
 private:
   Point3 center;      // 'eye point'
@@ -35,5 +36,7 @@ private:
 
   Ray get_ray(std::size_t i, std::size_t j) const; // gets ray for a given pixel
 
-  Color trace_ray(const Ray &r) const; // trace the ray to get color
+  Color
+  trace_ray(const Ray &r,
+            const HittableList &world) const; // trace the ray to get color
 };
