@@ -14,6 +14,7 @@ public:
   double aspect_ratio = 1.0; // generated image's aspect ratio
   std::size_t image_width = 100;
   std::size_t samples_per_pixel = 10;
+  std::size_t max_depth = 10;
 
   // WARN: This shouldn't be set from outside. this is to be calculated inside
   // intialize method.
@@ -40,7 +41,6 @@ private:
 
   Ray get_ray(std::size_t i, std::size_t j) const; // gets ray for a given pixel
 
-  Color
-  trace_ray(const Ray &r,
-            const HittableList &world) const; // trace the ray to get color
+  Color trace_ray(const Ray &r, const HittableList &world,
+                  const std::size_t depth) const; // trace the ray to get color
 };

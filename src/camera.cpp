@@ -25,7 +25,7 @@ std::vector<Vec3> Camera::render(const HittableList &world) {
       for (std::size_t sample = 0; sample < samples_per_pixel; sample += 1) {
         Ray ray = get_ray(i, j);
 
-        pixel_color += trace_ray(ray, world);
+        pixel_color += trace_ray(ray, world, max_depth);
       }
 
       framebuffer[index] = pixel_color * inv_samples_per_pix;
@@ -37,12 +37,17 @@ std::vector<Vec3> Camera::render(const HittableList &world) {
   return framebuffer;
 }
 
-Color Camera::trace_ray(const Ray &r, const HittableList &world) const {
+Color Camera::trace_ray(const Ray &r, const HittableList &world,
+                        const std::size_t depth) const {
+  // still bouncing around? nah.
+  if (depth <= 0)
+    return Color(0, 0, 0);
+
   HitRecord rec;
 
   if (world.hit(r, Interval(0.001, infinity), rec)) {
-    auto N = rec.normal;
-    return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
+    Vec3 direction = random_unit_vector_on_hemisphere(rec.normal);
+    return 0.5 * trace_ray(Ray(rec.p, direction), world, depth - 1);
   }
 
   // gradient from up to down
