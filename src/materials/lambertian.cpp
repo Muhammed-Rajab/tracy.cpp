@@ -3,8 +3,8 @@
 
 Lambertian::Lambertian(const Color &albedo) : albedo(albedo) {}
 
-bool Lambertian::scatter(const Ray &r, const HitRecord &rec, Color &attenuation,
-                         Ray &scattered) const {
+bool Lambertian::scatter(const Ray &r_in, const HitRecord &rec,
+                         Color &attenuation, Ray &scattered) const {
   // TODO: switch between two to see the difference between lambertian
   // distribution and uniform distribution on hemisphere.
   Vec3 scatter_direction = rec.normal + random_unit_vector();

@@ -3,11 +3,11 @@
 #include "base/material.hpp"
 #include "image_writer.hpp"
 
-class Lambertian : public Material {
+class Metal : public Material {
 public:
-  Lambertian(const Color &albedo);
+  Metal(const Color &albedo);
 
-  bool scatter(const Ray &r_in, const HitRecord &rec, Color &attenuation,
+  bool scatter(const Ray &r, const HitRecord &rec, Color &attenuation,
                Ray &scattered) const override;
 
 private:

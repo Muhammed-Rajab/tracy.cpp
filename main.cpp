@@ -1,6 +1,7 @@
 #include "base/material.hpp"
 #include "hittable_list.hpp"
 #include "materials/lambertian.hpp"
+#include "materials/metal.hpp"
 #include "sphere.hpp"
 #include "vec3.hpp"
 #include <memory>
@@ -18,10 +19,13 @@ int main() {
   auto lambertian_blue = std::make_shared<Lambertian>(Color(0.0, 0.0, 1.0));
   auto lambertian_yellow = std::make_shared<Lambertian>(Color(1.0, 1.0, 0.0));
 
-  world.add(std::make_shared<Sphere>(Point3(-1, 0, -1), 0.5, lambertian_red));
-  world.add(
-      std::make_shared<Sphere>(Point3(0.0, 0, -1), 0.5, lambertian_yellow));
-  world.add(std::make_shared<Sphere>(Point3(1, 0, -1), 0.5, lambertian_green));
+  auto metal_red = std::make_shared<Metal>(Color(1.0, 0.0, 0.0));
+  auto metal_green = std::make_shared<Metal>(Color(0.0, 1.0, 0.0));
+  auto metal_yellow = std::make_shared<Metal>(Color(1.0, 1.0, 0.0));
+
+  world.add(std::make_shared<Sphere>(Point3(-1, 0, -1), 0.5, metal_red));
+  world.add(std::make_shared<Sphere>(Point3(0.0, 0, -1), 0.5, metal_yellow));
+  world.add(std::make_shared<Sphere>(Point3(1, 0, -1), 0.5, metal_green));
 
   // ground, which is also huge sphere (checkmate, flath earther!)
   world.add(
