@@ -1,4 +1,5 @@
 // this part is to avoid getting warning messages from std_image_write
+#include "interval.hpp"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -21,9 +22,14 @@ void write_framebuffer_to_png(const char *filename,
 
       // TODO:: Gamma correction, along with clipping of x, y, and z values to
       // be in [0, 0.999] is important.
-      image[3 * idx + 0] = static_cast<uint8_t>(255.99f * framebuffer[idx].x());
-      image[3 * idx + 1] = static_cast<uint8_t>(255.99f * framebuffer[idx].y());
-      image[3 * idx + 2] = static_cast<uint8_t>(255.99f * framebuffer[idx].z());
+      static const Interval intensity(0.000, 0.999);
+      auto r = framebuffer[idx].x();
+      auto g = framebuffer[idx].y();
+      auto b = framebuffer[idx].z();
+
+      image[3 * idx + 0] = static_cast<uint8_t>(256 * intensity.clamp(r));
+      image[3 * idx + 1] = static_cast<uint8_t>(256 * intensity.clamp(g));
+      image[3 * idx + 2] = static_cast<uint8_t>(256 * intensity.clamp(b));
     }
   }
 
