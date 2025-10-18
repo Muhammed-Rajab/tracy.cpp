@@ -62,9 +62,8 @@ Color Camera::trace_ray(const Ray &r, const HittableList &world,
   // gradient from up to down
   double a = 0.5 * (unit_vector(r.direction()).y() + 1.0);
 
-  Color gradient_start_color = Color(0.96, 0.94, 0.94);
-  Color gradient_end_color = Color(0.99, 0.73, 0.17);
-  // Color gradient_end_color = Color(0.8, 0.8, 0.8);
+  Color gradient_start_color = Color(1, 1, 1);
+  Color gradient_end_color = Color(0.5, 0.7, 1.0);
 
   return (1.0 - a) * gradient_start_color + a * gradient_end_color;
 }
