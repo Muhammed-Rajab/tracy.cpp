@@ -3,6 +3,9 @@
 #include "interval.hpp"
 #include "ray.hpp"
 #include "vec3.hpp"
+#include <memory>
+
+class Material;
 
 class HitRecord {
 public:
@@ -12,6 +15,9 @@ public:
   // TODO: add comments on this design choice
   bool front_face;
   Vec3 normal; // the normal at the point of hit
+
+  // material
+  std::shared_ptr<Material> mat;
 
   void set_face_normal(const Ray &r, const Vec3 &outward_normal);
 };

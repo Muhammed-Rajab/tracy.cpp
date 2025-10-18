@@ -17,6 +17,7 @@ add_executable(tracy
   src/hittable.cpp
   src/hittable_list.cpp
   src/interval.cpp
+  src/materials/lambertian.cpp
 )
 
 target_include_directories(tracy PRIVATE include/)

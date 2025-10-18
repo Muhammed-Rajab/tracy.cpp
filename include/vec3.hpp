@@ -54,6 +54,12 @@ public:
     return Vec3(random_double(min, max), random_double(min, max),
                 random_double(min, max));
   }
+
+  bool near_zero() const {
+    auto s = 1e-8;
+    return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) &&
+           (std::fabs(e[2]) < s);
+  }
 };
 
 using Point3 = Vec3;

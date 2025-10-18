@@ -1,7 +1,9 @@
 #include "sphere.hpp"
 
-Sphere::Sphere(const Point3 &center, const double radius)
-    : center(center), radius(std::fmax(0, radius)) {}
+// TODO: add material initializer
+Sphere::Sphere(const Point3 &center, const double radius,
+               std::shared_ptr<Material> mat)
+    : center(center), radius(std::fmax(0, radius)), mat(mat) {}
 
 bool Sphere::hit(const Ray &r, Interval ray_t, HitRecord &rec) const {
   Vec3 oc = center - r.origin();
@@ -29,6 +31,7 @@ bool Sphere::hit(const Ray &r, Interval ray_t, HitRecord &rec) const {
   rec.p = r.at(rec.t);
   Vec3 outward_normal = (rec.p - center) / radius;
   rec.set_face_normal(r, outward_normal);
+  rec.mat = mat;
 
   return true;
 }

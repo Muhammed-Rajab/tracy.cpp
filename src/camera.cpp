@@ -1,8 +1,10 @@
 #include "camera.hpp"
 #include "base/hittable.hpp"
+#include "base/material.hpp"
 #include "hittable_list.hpp"
 #include "image_writer.hpp"
 #include "interval.hpp"
+#include "ray.hpp"
 #include "utils.hpp"
 #include "vec3.hpp"
 #include <cstddef>
@@ -46,11 +48,14 @@ Color Camera::trace_ray(const Ray &r, const HittableList &world,
   HitRecord rec;
 
   if (world.hit(r, Interval(0.001, infinity), rec)) {
-    // TODO: switch between two to see the difference between lambertian
-    // distribution and uniform distribution on hemisphere.
-    Vec3 direction = rec.normal + random_unit_vector();
-    // Vec3 direction = random_unit_vector_on_hemisphere(rec.normal);
-    return 0.5 * trace_ray(Ray(rec.p, direction), world, depth - 1);
+    Ray scattered;
+    Color attenuation;
+
+    // if we hit, we scatter the ray from the material and get the data from
+    // scattering
+    if (rec.mat->scatter(r, rec, attenuation, scattered)) {
+      return attenuation * trace_ray(scattered, world, depth - 1);
+    }
   }
 
   // gradient from up to down
