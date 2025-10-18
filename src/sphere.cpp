@@ -3,4 +3,32 @@
 Sphere::Sphere(const Point3 &center, const double radius)
     : center(center), radius(std::fmax(0, radius)) {}
 
-bool Sphere::hit(const Ray &r, Interval ray_t, HitRecord &rec) const {}
+bool Sphere::hit(const Ray &r, Interval ray_t, HitRecord &rec) const {
+  Vec3 oc = center - r.origin();
+  auto a = r.direction().length_squared();
+  auto h = dot(r.direction(), oc);
+  auto c = oc.length_squared() - radius * radius;
+
+  auto discriminant = h * h - a * c;
+  if (discriminant < 0)
+    return false;
+
+  auto sqrtd = std::sqrt(discriminant);
+
+  // get the nearest root that lies in acceptable range
+  auto root = (h - sqrtd) / a; // root #1
+  if (!ray_t.surrounds(root)) {
+    auto root = (h + sqrtd) / a; // root #2
+    if (!ray_t.surrounds(root)) {
+      return false;
+    }
+  }
+
+  // store information about hits to the record
+  rec.t = root;
+  rec.p = r.at(rec.t);
+  Vec3 outward_normal = (rec.p - center) / radius;
+  rec.set_face_normal(r, outward_normal);
+
+  return true;
+}
