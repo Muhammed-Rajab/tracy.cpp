@@ -35,7 +35,6 @@ std::vector<Vec3> Camera::render(const HittableList &world) {
 }
 
 Color Camera::trace_ray(const Ray &r, const HittableList &world) const {
-  // check for hits
   HitRecord rec;
 
   if (world.hit(r, Interval(0.001, infinity), rec)) {
