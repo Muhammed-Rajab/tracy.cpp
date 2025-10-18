@@ -16,11 +16,12 @@ int main() {
   auto lambertian_red = std::make_shared<Lambertian>(Color(1.0, 0.0, 0.0));
   auto lambertian_green = std::make_shared<Lambertian>(Color(0.0, 1.0, 0.0));
   auto lambertian_blue = std::make_shared<Lambertian>(Color(0.0, 0.0, 1.0));
+  auto lambertian_yellow = std::make_shared<Lambertian>(Color(1.0, 1.0, 0.0));
 
+  world.add(std::make_shared<Sphere>(Point3(-1, 0, -1), 0.5, lambertian_red));
   world.add(
-      std::make_shared<Sphere>(Point3(-0.51, 0, -1), 0.5, lambertian_red));
-  world.add(
-      std::make_shared<Sphere>(Point3(0.51, 0, -1), 0.5, lambertian_green));
+      std::make_shared<Sphere>(Point3(0.0, 0, -1), 0.5, lambertian_yellow));
+  world.add(std::make_shared<Sphere>(Point3(1, 0, -1), 0.5, lambertian_green));
 
   // ground, which is also huge sphere (checkmate, flath earther!)
   world.add(
