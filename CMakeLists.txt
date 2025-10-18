@@ -13,6 +13,9 @@ add_executable(tracy
   src/image_writer.cpp
   src/camera.cpp
   src/ray.cpp
+  src/sphere.cpp
+  src/hittable.cpp
+  src/interval.cpp
 )
 
 target_include_directories(tracy PRIVATE include/)

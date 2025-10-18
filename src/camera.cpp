@@ -1,5 +1,8 @@
 #include "camera.hpp"
+#include "base/hittable.hpp"
 #include "image_writer.hpp"
+#include "interval.hpp"
+#include "sphere.hpp"
 #include "utils.hpp"
 #include "vec3.hpp"
 #include <cstddef>
@@ -30,29 +33,14 @@ std::vector<Vec3> Camera::render() {
   return framebuffer;
 }
 
-double hit_sphere(const Ray &r, const Point3 &center, const double radius) {
-  Vec3 oc = center - r.origin();
-  auto a = dot(r.direction(), r.direction());
-  auto b = -2.0 * dot(r.direction(), oc);
-  auto c = dot(oc, oc) - radius * radius;
-  auto discriminant = b * b - 4 * a * c;
-
-  if (discriminant < 0) {
-    return -1.0;
-  } else {
-    return (-b - std::sqrt(discriminant)) / (2.0 * a);
-  }
-}
-
 Color Camera::trace_ray(const Ray &r) const {
   // check for hits
-  Point3 center = Point3(0, 0, -1);
-  double radius = 0.5;
-  double t = hit_sphere(r, center, radius);
+  Sphere s(Point3(0, 0, -1), 0.7);
 
-  if (t >= 0.0) {
-    Point3 P = r.at(t);
-    Vec3 N = (P - center) / radius;
+  HitRecord rec;
+
+  if (s.hit(r, Interval(0.01, infinity), rec)) {
+    auto N = rec.normal;
     return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
   }
 
