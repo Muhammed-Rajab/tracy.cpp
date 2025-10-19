@@ -51,11 +51,16 @@ Color Camera::trace_ray(const Ray &r, const HittableList &world,
     Ray scattered;
     Color attenuation;
 
+    if (!rec.mat) {
+      std::cerr << "ERROR: hit record has  null material" << std::endl;
+      return Color(0, 0, 0);
+    }
+
     // if we hit, we scatter the ray from the material and get the data from
     // scattering
-    if (rec.mat->scatter(r, rec, attenuation, scattered)) {
+    if (rec.mat->scatter(r, rec, attenuation, scattered))
       return attenuation * trace_ray(scattered, world, depth - 1);
-    }
+
     return Color(0, 0, 0);
   }
 

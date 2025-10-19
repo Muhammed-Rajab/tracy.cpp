@@ -1,5 +1,6 @@
 #include "base/material.hpp"
 #include "hittable_list.hpp"
+#include "materials/dielectric.hpp"
 #include "materials/lambertian.hpp"
 #include "materials/metal.hpp"
 #include "sphere.hpp"
@@ -9,8 +10,7 @@
 #include "include/camera.hpp"
 #include "include/image_writer.hpp"
 
-int main() {
-
+int test1() {
   HittableList world;
 
   // spheres
@@ -29,7 +29,9 @@ int main() {
 
   auto metal_blue = std::make_shared<Metal>(Color(0.0, 0.0, 1.0), .8);
 
-  world.add(std::make_shared<Sphere>(Point3(-1, 0, -1), 0.5, metal_red));
+  auto dielectric = std::make_shared<Dielectric>(1.5);
+
+  world.add(std::make_shared<Sphere>(Point3(-1, 0, -1), 0.5, dielectric));
   world.add(std::make_shared<Sphere>(Point3(0.0, 0, -1), 0.5, metal_silver));
   world.add(std::make_shared<Sphere>(Point3(1, 0, -1), 0.5, metal_green));
 
@@ -51,7 +53,7 @@ int main() {
   // 0.5, material_right));
 
   Camera cam;
-  cam.samples_per_pixel = 50;
+  cam.samples_per_pixel = 10;
   cam.image_width = 400;
   cam.max_depth = 20;
   cam.aspect_ratio = 16.0 / 9.0;
@@ -60,5 +62,42 @@ int main() {
   write_framebuffer_to_png("./image.png", framebuffer, cam.image_width,
                            cam.image_height, 3);
 
+  return 0;
+}
+
+int test2() {
+  HittableList world;
+
+  auto material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
+  auto material_center = make_shared<Lambertian>(Color(0.1, 0.2, 0.5));
+  auto material_left = make_shared<Dielectric>(1.50);
+  auto material_bubble = make_shared<Dielectric>(1.00 / 1.50);
+  auto material_right = make_shared<Metal>(Color(0.8, 0.6, 0.2), 0.0);
+
+  world.add(
+      make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, material_ground));
+  world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.2), 0.5, material_center));
+  world.add(make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.5, material_left));
+  // world.add(make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.4,
+  // material_bubble));
+  world.add(make_shared<Sphere>(Point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+  Camera cam;
+  cam.samples_per_pixel = 10;
+  cam.image_width = 400;
+  cam.max_depth = 20;
+  cam.aspect_ratio = 16.0 / 9.0;
+
+  auto framebuffer = cam.render(world);
+  write_framebuffer_to_png("./image.png", framebuffer, cam.image_width,
+                           cam.image_height, 3);
+
+  return 0;
+}
+
+int main() {
+
+  // test1();
+  test2();
   return 0;
 }

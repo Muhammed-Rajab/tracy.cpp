@@ -17,8 +17,11 @@ add_executable(tracy
   src/hittable.cpp
   src/hittable_list.cpp
   src/interval.cpp
+
+  # materials
   src/materials/lambertian.cpp
   src/materials/metal.cpp
+  src/materials/dielectric.cpp
 )
 
 target_include_directories(tracy PRIVATE include/)
