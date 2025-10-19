@@ -77,14 +77,13 @@ int test2() {
       make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, material_ground));
   world.add(make_shared<Sphere>(Point3(0.0, 0.0, -1.2), 0.5, material_center));
   world.add(make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.5, material_left));
-  // world.add(make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.4,
-  // material_bubble));
+  world.add(make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.4, material_bubble));
   world.add(make_shared<Sphere>(Point3(1.0, 0.0, -1.0), 0.5, material_right));
 
   Camera cam;
-  cam.samples_per_pixel = 10;
+  cam.samples_per_pixel = 20;
   cam.image_width = 400;
-  cam.max_depth = 20;
+  cam.max_depth = 10000;
   cam.aspect_ratio = 16.0 / 9.0;
 
   auto framebuffer = cam.render(world);
