@@ -1,4 +1,3 @@
-#include "base/material.hpp"
 #include "hittable_list.hpp"
 #include "materials/dielectric.hpp"
 #include "materials/lambertian.hpp"

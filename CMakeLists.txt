@@ -19,9 +19,9 @@ add_executable(tracy
   src/interval.cpp
 
   # materials
+  src/materials/dielectric.cpp
   src/materials/lambertian.cpp
   src/materials/metal.cpp
-  src/materials/dielectric.cpp
 )
 
 target_include_directories(tracy PRIVATE include/)
