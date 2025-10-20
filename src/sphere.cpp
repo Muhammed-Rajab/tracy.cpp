@@ -20,7 +20,11 @@ bool Sphere::hit(const Ray &r, Interval ray_t, HitRecord &rec) const {
   // get the nearest root that lies in acceptable range
   auto root = (h - sqrtd) / a; // root #1
   if (!ray_t.surrounds(root)) {
-    auto root = (h + sqrtd) / a; // root #2
+    // WARN: this is dangerous. this single line wasted a day of my life trying
+    // to figure it out. if you declare a new variable here, the whole normal
+    // calculation will be messed up. so always keep in mind to reuse the root
+    // variable.
+    root = (h + sqrtd) / a; // root #2
     if (!ray_t.surrounds(root)) {
       return false;
     }
