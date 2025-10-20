@@ -24,6 +24,10 @@ public:
   Point3 lookfrom = Point3(0, 0, 0); // 'eye point'
   Point3 lookat = Point3(0, 0, -1);  // where to look at
   Vec3 vup = Vec3(0, 1, 0);          // up direction of the camera
+                                     //
+  double defocus_angle = 0; // Variation angle of rays through each pixel
+  double focus_dist =
+      10; // Distance from camera lookfrom point to plane of perfect focus
 
   std::vector<Vec3> render(const HittableList &world);
 
@@ -35,6 +39,9 @@ private:
   double inv_samples_per_pix; // scales the color, accounting for the samples
   Vec3 u, v, w;               // basis vectors of camera frame
 
+  Vec3 defocus_disk_u; // Defocus disk horizontal radius
+  Vec3 defocus_disk_v; // Defocus disk vertical radius
+
   void initialize(); // calculates important figures
 
   Vec3 sample_square() const;
@@ -43,4 +50,6 @@ private:
 
   Color trace_ray(const Ray &r, const HittableList &world,
                   const std::size_t depth) const; // trace the ray to get color
+
+  Point3 defocus_disk_sample() const;
 };
