@@ -1,5 +1,6 @@
 #pragma once
 
+#include "base/hittable.hpp"
 #include "base/material.hpp"
 #include "image_writer.hpp"
 

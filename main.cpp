@@ -81,7 +81,7 @@ int test2() {
   Camera cam;
   cam.samples_per_pixel = 20;
   cam.image_width = 400;
-  cam.max_depth = 10000;
+  cam.max_depth = 50;
   cam.aspect_ratio = 16.0 / 9.0;
 
   auto framebuffer = cam.render(world);
