@@ -69,8 +69,8 @@ int test2() {
 
   auto material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
   auto material_center = make_shared<Lambertian>(Color(0.1, 0.2, 0.5));
-  auto material_left = make_shared<Dielectric>(1.00 / 1.33);
-  auto material_right = make_shared<Metal>(Color(0.8, 0.6, 0.2), 0.0);
+  auto material_left = make_shared<Dielectric>(1.5);
+  auto material_right = make_shared<Metal>(Color(0.8, 0.6, 0.2), 1.0);
 
   world.add(
       make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, material_ground));
@@ -83,6 +83,18 @@ int test2() {
   cam.image_width = 400;
   cam.max_depth = 50;
   cam.aspect_ratio = 16.0 / 9.0;
+
+  bool hd = false;
+
+  if (hd) {
+    cam.image_width = 1280;
+    cam.samples_per_pixel = 200;
+    cam.max_depth = 1000;
+  } else {
+    cam.image_width = 400;
+    cam.samples_per_pixel = 50;
+    cam.max_depth = 20;
+  }
 
   auto framebuffer = cam.render(world);
   write_framebuffer_to_png("./image.png", framebuffer, cam.image_width,
