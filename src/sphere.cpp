@@ -17,21 +17,35 @@ bool Sphere::hit(const Ray &r, Interval ray_t, HitRecord &rec) const {
 
   auto sqrtd = std::sqrt(discriminant);
 
-  // get the nearest root that lies in acceptable range
-  auto root = (h - sqrtd) / a; // root #1
-  if (!ray_t.surrounds(root)) {
-    // WARN: this is dangerous. this single line wasted a day of my life trying
-    // to figure it out. if you declare a new variable here, the whole normal
-    // calculation will be messed up. so always keep in mind to reuse the root
-    // variable.
-    root = (h + sqrtd) / a; // root #2
-    if (!ray_t.surrounds(root)) {
+  // WARN: THIS CODE SHALL NOT BE DELETED FROM THIS CODEBASE AND MUST BE
+  // MAINTAINED AS A SYMBOL OF MY FOOLISHNESS.
+  // // get the nearest root that lies in acceptable range
+  // auto root = (h - sqrtd) / a; // root #1
+  // if (!ray_t.surrounds(root)) {
+  //   // WARN: this is dangerous. this single line wasted a day of my life
+  //   trying
+  //   // to figure it out. if you declare a new variable here, the whole normal
+  //   // calculation will be messed up. so always keep in mind to reuse the
+  //   root
+  //   // variable.
+  //   root = (h + sqrtd) / a; // root #2
+  //   if (!ray_t.surrounds(root)) {
+  //     return false;
+  //   }
+  // }
+  double nearest_root = (h - sqrtd) / a;
+  double second_root;
+  if (!ray_t.surrounds(nearest_root)) {
+    second_root = (h + sqrtd) / a; // root #2
+    if (ray_t.surrounds(second_root)) {
+      nearest_root = second_root;
+    } else {
       return false;
     }
   }
 
   // store information about hits to the record
-  rec.t = root;
+  rec.t = nearest_root;
   rec.p = r.at(rec.t);
   Vec3 outward_normal = (rec.p - center) / radius;
   rec.set_face_normal(r, outward_normal);
